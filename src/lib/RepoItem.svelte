@@ -56,9 +56,10 @@
           width="32"
           height="32"
           class="w-8 h-8 rounded-md shrink-0 bg-[var(--bg-canvas)] border border-[var(--border-subtle)] object-cover"
-          alt="{owner}"
+          alt={owner}
           loading="lazy"
-          referrerpolicy="no-referrer"
+          decoding="async"
+          crossorigin="anonymous"
           onerror={(e) => {
             (e.currentTarget as HTMLElement).style.display = 'none';
           }}

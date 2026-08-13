@@ -39,5 +39,5 @@
 ---
 
 ## File Structure & Map
-- `src/lib/icons/`: SVG icon components (`StarIcon`, `ForkIcon`, `BookmarkIcon`, `CheckIcon`, `ExternalLinkIcon`, `FilterIcon`, `ResetIcon`, `SunIcon`, `MoonIcon`, `KeyboardIcon`, `CloseIcon`, `GithubIcon`, `FlameIcon`, `TrashIcon`, `ChevronDownIcon`, `SettingsIcon`, `ClockIcon`, `UndoIcon`).
+- `src/lib/icons/`: Reusable SVG icon components.
 - `src/app.css`: Tailwind v4 base styles, Geist typography, physical `<kbd>` styling, micro-animations, minimal scrollbars.
