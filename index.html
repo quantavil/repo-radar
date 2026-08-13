@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <script>
+      try {
+        const theme = localStorage.getItem('repo_radar_theme');
+        if (theme === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {}
+    </script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#09090B" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F4F4F1" media="(prefers-color-scheme: light)" />
+    <title>RepoRadar — Zero-Duplicate Open Source Repository Discovery</title>
+    <meta name="description" content="Discover fresh trending open-source repositories daily without duplicates. Powered by Trendshift static API." />
+    
+    <!-- Geist, Geist Mono & Space Grotesk Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body class="antialiased">
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
