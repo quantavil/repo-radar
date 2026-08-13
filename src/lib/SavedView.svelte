@@ -53,46 +53,48 @@
 
 <div class="space-y-5 flex flex-col flex-1">
   <!-- Controls Bar -->
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg shadow-[var(--card-shadow)] shrink-0">
-    <!-- Search Input -->
-    <div class="flex-1 min-w-0">
-      <input
-        type="text"
-        bind:value={searchQuery}
-        placeholder="Filter saved repos by name, language, or tag..."
-        class="w-full px-3 py-1.5 text-xs font-mono bg-[var(--bg-canvas)] text-[var(--text-main)] border border-[var(--border-subtle)] rounded focus:outline-none focus:border-[var(--accent-signal)] placeholder-[var(--text-muted)] transition-colors"
-        aria-label="Filter saved repositories"
-      />
-    </div>
+  <div class="flex flex-row items-center justify-between gap-2.5 sm:gap-3 p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg shadow-[var(--card-shadow)] shrink-0 flex-wrap sm:flex-nowrap">
+    <!-- Inline Search & Filter Dropdown Group -->
+    <div class="flex items-center gap-2 flex-1 min-w-0 w-full sm:w-auto">
+      <div class="flex-1 min-w-0">
+        <input
+          type="text"
+          bind:value={searchQuery}
+          placeholder="Filter saved repos by name, language, or tag..."
+          class="w-full px-3 py-1.5 text-xs font-mono bg-[var(--bg-canvas)] text-[var(--text-main)] border border-[var(--border-subtle)] rounded focus:outline-none focus:border-[var(--accent-signal)] placeholder-[var(--text-muted)] transition-colors"
+          aria-label="Filter saved repositories"
+        />
+      </div>
 
-    <!-- Actions: Sort Dropdown & Export -->
-    <div class="flex items-center gap-2 shrink-0 font-mono text-xs">
       <select
         bind:value={sortBy}
         aria-label="Sort saved repositories"
-        class="px-2 py-1 bg-[var(--bg-canvas)] text-[var(--text-main)] border border-[var(--border-subtle)] rounded hover:border-[var(--border-strong)] focus:outline-none focus:border-[var(--accent-signal)] font-mono text-xs cursor-pointer"
+        class="px-2.5 py-1.5 bg-[var(--bg-canvas)] text-[var(--text-main)] border border-[var(--border-subtle)] rounded hover:border-[var(--border-strong)] focus:outline-none focus:border-[var(--accent-signal)] font-mono text-xs cursor-pointer shrink-0"
       >
         <option value="growth">Growth</option>
         <option value="stars">Stars</option>
         <option value="name">Name</option>
       </select>
+    </div>
 
-      {#if savedList.length > 0}
+    <!-- Actions: Export & Clear All -->
+    {#if savedList.length > 0}
+      <div class="flex items-center gap-2 shrink-0 font-mono text-xs ml-auto sm:ml-0">
         <button
           onclick={exportJSON}
           title="Export Bookmarks as JSON"
-          class="px-2.5 py-1 bg-[var(--bg-canvas)] text-[var(--text-main)] border border-[var(--border-subtle)] rounded text-xs hover:border-[var(--border-strong)] transition-all btn-press focus-visible:outline-none focus-visible:border-[var(--accent-signal)]"
+          class="px-2.5 py-1.5 bg-[var(--bg-canvas)] text-[var(--text-main)] border border-[var(--border-subtle)] rounded text-xs hover:border-[var(--border-strong)] transition-all btn-press focus-visible:outline-none focus-visible:border-[var(--accent-signal)]"
         >
           Export JSON
         </button>
         <button
           onclick={() => (isConfirmOpen = true)}
-          class="px-2.5 py-1 bg-[var(--badge-red-bg)] text-[var(--badge-red-text)] border border-[var(--badge-red-text)]/30 rounded text-xs hover:opacity-90 transition-all btn-press focus-visible:outline-none focus-visible:border-[var(--accent-signal)]"
+          class="px-2.5 py-1.5 bg-[var(--badge-red-bg)] text-[var(--badge-red-text)] border border-[var(--badge-red-text)]/30 rounded text-xs hover:opacity-90 transition-all btn-press focus-visible:outline-none focus-visible:border-[var(--accent-signal)]"
         >
           Clear All
         </button>
-      {/if}
-    </div>
+      </div>
+    {/if}
   </div>
 
   <div class="sr-only" role="status" aria-live="polite">
