@@ -51,45 +51,43 @@
   }
 </script>
 
-<div class="space-y-5">
+<div class="space-y-5 flex flex-col flex-1">
   <!-- Controls Bar -->
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg shadow-[var(--card-shadow)]">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg shadow-[var(--card-shadow)] shrink-0">
     <!-- Search Input -->
     <div class="flex-1 min-w-0">
       <input
         type="text"
         bind:value={searchQuery}
         placeholder="Filter saved repos by name, language, or tag..."
-        class="w-full px-3 py-1.5 text-xs font-mono bg-[var(--bg-canvas)] text-[var(--text-main)] border border-[var(--border-subtle)] rounded focus:outline-none focus:ring-2 focus:ring-[var(--accent-signal)] placeholder-[var(--text-muted)] transition-colors"
+        class="w-full px-3 py-1.5 text-xs font-mono bg-[var(--bg-canvas)] text-[var(--text-main)] border border-[var(--border-subtle)] rounded focus:outline-none focus:border-[var(--accent-signal)] placeholder-[var(--text-muted)] transition-colors"
         aria-label="Filter saved repositories"
       />
     </div>
 
     <!-- Actions: Sort Dropdown & Export -->
     <div class="flex items-center gap-2 shrink-0 font-mono text-xs">
-      <label class="flex items-center gap-1.5 text-[var(--text-muted)]">
-        <span>Sort:</span>
-        <select
-          bind:value={sortBy}
-          class="px-2 py-1 bg-[var(--bg-canvas)] text-[var(--text-main)] border border-[var(--border-subtle)] rounded focus:outline-none focus:ring-2 focus:ring-[var(--accent-signal)] font-mono text-xs cursor-pointer"
-        >
-          <option value="growth">Highest Growth (+stars)</option>
-          <option value="stars">Most Total Stars</option>
-          <option value="name">Repository Name</option>
-        </select>
-      </label>
+      <select
+        bind:value={sortBy}
+        aria-label="Sort saved repositories"
+        class="px-2 py-1 bg-[var(--bg-canvas)] text-[var(--text-main)] border border-[var(--border-subtle)] rounded hover:border-[var(--border-strong)] focus:outline-none focus:border-[var(--accent-signal)] font-mono text-xs cursor-pointer"
+      >
+        <option value="growth">Growth</option>
+        <option value="stars">Stars</option>
+        <option value="name">Name</option>
+      </select>
 
       {#if savedList.length > 0}
         <button
           onclick={exportJSON}
           title="Export Bookmarks as JSON"
-          class="px-2.5 py-1 bg-[var(--bg-canvas)] text-[var(--text-main)] border border-[var(--border-subtle)] rounded text-xs hover:border-[var(--border-strong)] transition-all btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-signal)]"
+          class="px-2.5 py-1 bg-[var(--bg-canvas)] text-[var(--text-main)] border border-[var(--border-subtle)] rounded text-xs hover:border-[var(--border-strong)] transition-all btn-press focus-visible:outline-none focus-visible:border-[var(--accent-signal)]"
         >
           Export JSON
         </button>
         <button
           onclick={() => (isConfirmOpen = true)}
-          class="px-2.5 py-1 bg-[var(--badge-red-bg)] text-[var(--badge-red-text)] border border-[var(--badge-red-text)]/30 rounded text-xs hover:opacity-90 transition-all btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-signal)]"
+          class="px-2.5 py-1 bg-[var(--badge-red-bg)] text-[var(--badge-red-text)] border border-[var(--badge-red-text)]/30 rounded text-xs hover:opacity-90 transition-all btn-press focus-visible:outline-none focus-visible:border-[var(--accent-signal)]"
         >
           Clear All
         </button>
@@ -103,21 +101,21 @@
 
   <!-- Saved Items Grid -->
   {#if savedList.length === 0}
-    <div class="py-20 text-center space-y-4 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-surface)] p-8 max-w-md mx-auto shadow-[var(--card-shadow)]">
+    <div class="flex-1 flex flex-col items-center justify-center py-16 text-center space-y-3 border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-surface)] p-8 w-full min-h-[360px] shadow-[var(--card-shadow)]">
       <div class="w-12 h-12 rounded-full bg-[var(--accent-signal-soft-bg)] border border-[var(--accent-signal)]/30 text-[var(--accent-signal-soft-text)] flex items-center justify-center mx-auto">
         <BookmarkIcon size={22} aria-hidden="true" />
       </div>
       <div class="space-y-1">
         <h3 class="font-bold text-base text-[var(--text-main)] tracking-tight font-display">
-          No Saved Repositories
+          No Saved Repos
         </h3>
         <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-          Press <kbd class="mx-0.5">S</kbd> on any card in the feed stream or swipe right on mobile to bookmark repositories.
+          Press <kbd class="mx-0.5">S</kbd> or swipe right to bookmark repos.
         </p>
       </div>
     </div>
   {:else if filteredAndSortedList.length === 0}
-    <div class="py-12 text-center space-y-2 text-[var(--text-muted)] font-mono text-xs border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-surface)] p-6">
+    <div class="py-12 text-center space-y-2 text-[var(--text-muted)] font-mono text-xs border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-surface)] p-6 w-full">
       <p>No saved repositories match "{searchQuery}".</p>
       <button
         onclick={() => (searchQuery = '')}

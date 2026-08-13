@@ -1,11 +1,46 @@
 <script lang="ts">
   import { seenStore } from './seen.svelte';
   import ToggleSwitch from './ToggleSwitch.svelte';
-  import { SettingsIcon, SunIcon, MoonIcon, KeyboardIcon } from './icons';
+  import { SettingsIcon, SunIcon, MoonIcon, KeyboardIcon, ClockIcon } from './icons';
 
   let { isDark = $bindable(true) } = $props<{
     isDark?: boolean;
   }>();
+
+  let importStatus = $state<{ message: string; isError: boolean } | null>(null);
+
+  function handleExportHistory() {
+    const jsonStr = seenStore.exportHistoryJSON();
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.href = url;
+    downloadAnchor.download = `reporadar-history-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function handleImportHistory(e: Event) {
+    const target = e.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result as string;
+      if (!content) return;
+      const res = seenStore.importHistoryJSON(content);
+      if (res.success) {
+        importStatus = { message: `Successfully imported ${res.count} history records (overwritten).`, isError: false };
+      } else {
+        importStatus = { message: res.error || 'Failed to import history JSON.', isError: true };
+      }
+      target.value = '';
+    };
+    reader.readAsText(file);
+  }
 
   const shortcuts = [
     { key: '1', action: 'Switch to Feed View (Home)' },
@@ -73,6 +108,45 @@
         />
       </div>
     </div>
+  </div>
+
+  <!-- History Data Management Card -->
+  <div class="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg shadow-[var(--card-shadow)] p-5 sm:p-6 space-y-4">
+    <div class="flex items-center gap-2 border-b border-[var(--border-subtle)] pb-3">
+      <ClockIcon size={18} class="text-[var(--accent-signal)]" aria-hidden="true" />
+      <h2 class="font-bold text-base text-[var(--text-main)] font-display tracking-tight">
+        History Data Management
+      </h2>
+    </div>
+
+    <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+      Export your seen repository history as a JSON file or import history from a file. <strong class="text-[var(--text-main)]">Note: Importing will always overwrite current history.</strong>
+    </p>
+
+    <div class="flex flex-wrap items-center gap-3 pt-1 font-mono text-xs">
+      <button
+        onclick={handleExportHistory}
+        class="px-3 py-1.5 bg-[var(--bg-canvas)] text-[var(--text-main)] border border-[var(--border-subtle)] rounded text-xs font-mono font-medium hover:border-[var(--border-strong)] transition-all btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-signal)]"
+      >
+        Export History ({seenStore.seenSize})
+      </button>
+
+      <label class="px-3 py-1.5 bg-[var(--accent-signal-soft-bg)] text-[var(--accent-signal-soft-text)] border border-[var(--accent-signal)]/30 rounded text-xs font-mono font-medium hover:opacity-90 transition-all cursor-pointer btn-press focus-within:ring-2 focus-within:ring-[var(--accent-signal)]">
+        <span>Import History (.json)</span>
+        <input
+          type="file"
+          accept=".json,application/json"
+          onchange={handleImportHistory}
+          class="sr-only"
+        />
+      </label>
+    </div>
+
+    {#if importStatus}
+      <div class="p-2.5 rounded text-xs font-mono border {importStatus.isError ? 'bg-[var(--badge-red-bg)] text-[var(--badge-red-text)] border-[var(--badge-red-text)]/30' : 'bg-[var(--accent-signal-soft-bg)] text-[var(--accent-signal-soft-text)] border-[var(--accent-signal)]/30'}">
+        {importStatus.message}
+      </div>
+    {/if}
   </div>
 
   <!-- Keyboard Shortcuts Cheat-sheet Card -->

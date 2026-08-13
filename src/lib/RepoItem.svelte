@@ -46,7 +46,7 @@
 <div
   class="bg-[var(--bg-surface)] border rounded-lg p-3.5 sm:p-5 transition-all duration-200 text-left shadow-[var(--card-shadow)] {
     isFocused
-      ? 'border-[var(--accent-signal)] ring-2 ring-[var(--accent-signal)]/30'
+      ? 'border-[var(--accent-signal)]'
       : 'border-[var(--border-subtle)] hover:border-[var(--border-strong)]'
   } {isSeen ? 'opacity-50 grayscale-[15%]' : 'opacity-100'} {containerClass}"
 >

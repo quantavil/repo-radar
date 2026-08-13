@@ -312,6 +312,42 @@ export class SeenStore {
       console.error('Failed to save saved_repos to localStorage:', err);
     }
   }
+
+  exportHistoryJSON(): string {
+    const entries = Array.from(this.seenDetails.entries());
+    return JSON.stringify(entries, null, 2);
+  }
+
+  importHistoryJSON(jsonStr: string): { success: boolean; count: number; error?: string } {
+    try {
+      const parsed = JSON.parse(jsonStr);
+      const newMap = new Map<string, TrendshiftRepo>();
+
+      if (Array.isArray(parsed)) {
+        for (const item of parsed) {
+          if (Array.isArray(item) && item.length >= 2 && item[0] && item[1]) {
+            const [k, v] = item;
+            newMap.set(this.normalizeKey(k), v);
+          } else if (typeof item === 'string' && item.trim()) {
+            const norm = this.normalizeKey(item);
+            newMap.set(norm, this.createStubRepo(item));
+          } else if (item && typeof item === 'object' && item.full_name) {
+            const norm = this.normalizeKey(item.full_name);
+            newMap.set(norm, item);
+          }
+        }
+      } else {
+        return { success: false, count: 0, error: 'Invalid JSON format. Expected an array of history entries.' };
+      }
+
+      this.debouncer.cancel();
+      this.seenDetails = newMap;
+      this.saveSeenSync();
+      return { success: true, count: newMap.size };
+    } catch (err: any) {
+      return { success: false, count: 0, error: err?.message || 'Failed to parse JSON file' };
+    }
+  }
 }
 
 export const seenStore = new SeenStore();

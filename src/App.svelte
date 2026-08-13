@@ -161,7 +161,7 @@
   />
 
   <!-- Main View Area -->
-  <main class="flex-1 max-w-4xl w-full mx-auto px-3.5 sm:px-4 py-4 sm:py-6">
+  <main class="flex-1 max-w-4xl w-full mx-auto px-3.5 sm:px-4 py-4 sm:py-6 flex flex-col">
     <!-- Subheader info banner / View Header -->
     <div class="flex items-center justify-between gap-x-4 mb-5 pb-3 border-b border-[var(--border-subtle)] text-xs text-[var(--text-muted)]">
       {#if activeView === 'feed'}

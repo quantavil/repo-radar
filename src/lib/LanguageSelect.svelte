@@ -113,7 +113,7 @@
     aria-controls="lang-listbox"
     aria-activedescendant={isOpen && LANGUAGE_OPTIONS[highlightedIndex] ? `lang-opt-${LANGUAGE_OPTIONS[highlightedIndex].id}` : undefined}
     aria-label="Filter repositories by language: {selectedOption.label}"
-    class="inline-flex items-center gap-1 font-mono text-[11px] sm:text-xs font-bold text-[var(--text-main)] uppercase cursor-pointer hover:opacity-80 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-signal)] rounded px-0.5 -mx-0.5"
+    class="inline-flex items-center gap-1 font-mono text-[11px] sm:text-xs font-bold text-[var(--text-main)] uppercase cursor-pointer hover:opacity-80 transition-opacity focus-visible:outline-none focus-visible:border-[var(--accent-signal)] rounded px-0.5 -mx-0.5"
   >
     <span>{selectedOption.label}</span>
     <span class="text-[var(--text-muted)] flex items-center justify-center shrink-0 transition-transform duration-150 {isOpen ? 'rotate-180' : ''}" aria-hidden="true">

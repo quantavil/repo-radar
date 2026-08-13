@@ -78,6 +78,10 @@
     scrollbar-width: thin;
     scrollbar-color: var(--border-subtle) transparent;
   }
+
+  *:focus-visible, input:focus, select:focus {
+    outline: none;
+  }
 }
 
 /* Utilitarian physical <kbd> key style */
