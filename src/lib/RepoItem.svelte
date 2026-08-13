@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { getRepoOwner, type TrendshiftRepo } from './types';
+  import type { TrendshiftRepo } from './types';
   import { getLanguageBadgeStyle } from './badges';
   import {
     StarIcon,
@@ -27,13 +27,16 @@
     containerClass?: string;
   }>();
 
-  let owner = $derived(getRepoOwner(repo.full_name));
+  let [owner, repoName] = $derived(
+    repo.full_name?.includes('/')
+      ? [repo.full_name.split('/')[0], repo.full_name.split('/').slice(1).join('/')]
+      : ['', repo.full_name || '']
+  );
 
   function formatDate(isoStr?: string) {
     if (!isoStr) return '';
     try {
-      const d = new Date(isoStr);
-      return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+      return new Date(isoStr).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
     } catch {
       return '';
     }
@@ -60,9 +63,7 @@
           loading="lazy"
           decoding="async"
           crossorigin="anonymous"
-          onerror={(e) => {
-            (e.currentTarget as HTMLElement).style.display = 'none';
-          }}
+          onerror={(e) => ((e.currentTarget as HTMLElement).style.display = 'none')}
         />
       {/if}
 
@@ -80,11 +81,18 @@
         href={repo.github_url || `https://github.com/${repo.full_name}`}
         target="_blank"
         rel="noopener noreferrer"
-        class="group font-mono text-sm sm:text-base font-semibold text-[var(--text-main)] hover:underline flex items-center gap-1 min-w-0 flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-signal)] rounded"
+        class="group font-mono flex flex-col justify-center min-w-0 flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-signal)] rounded"
         aria-label="Open {repo.full_name} on GitHub (opens in a new tab)"
       >
-        <span class="truncate">{repo.full_name}</span>
-        <ExternalLinkIcon size={13} class="shrink-0 text-[var(--text-muted)] group-hover:text-[var(--text-main)] transition-colors" aria-hidden="true" />
+        {#if owner}
+          <span class="text-[10px] sm:text-xs text-[var(--text-muted)] font-mono font-normal leading-tight truncate">
+            {owner}
+          </span>
+        {/if}
+        <span class="font-semibold text-sm sm:text-base text-[var(--text-main)] group-hover:underline flex items-center gap-1 min-w-0 leading-tight">
+          <span class="truncate">{repoName}</span>
+          <ExternalLinkIcon size={13} class="shrink-0 text-[var(--text-muted)] group-hover:text-[var(--text-main)] transition-colors" aria-hidden="true" />
+        </span>
       </a>
 
       {#if extraHeader}
@@ -143,9 +151,8 @@
     {#if repo.tags && repo.tags.length > 0}
       <div class="flex items-center gap-1.5 flex-wrap">
         {#each repo.tags.slice(0, 4) as tag}
-          {@const formattedTag = tag.startsWith('#') ? tag : `#${tag}`}
           <span class="px-1.5 py-0.5 rounded bg-[var(--bg-canvas)] border border-[var(--border-subtle)] text-[10px] font-mono text-[var(--text-muted)] hover:text-[var(--text-main)] hover:border-[var(--border-strong)] transition-colors">
-            {formattedTag}
+            {tag.startsWith('#') ? tag : `#${tag}`}
           </span>
         {/each}
       </div>
