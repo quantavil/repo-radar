@@ -73,17 +73,13 @@ export class RepoFeed {
           }
 
           localSeenInSession.add(normName);
-          collected.push(item);
+          collected.push({ ...item, timeframe: tf });
           addedInThisTimeframe++;
         }
 
         if (!primaryTimeframeSet && addedInThisTimeframe > 0) {
           this.activeTimeframe = tf;
           primaryTimeframeSet = true;
-        }
-
-        if (collected.length >= 10) {
-          break;
         }
       } catch (err) {
         console.warn(`Failed to fetch ${tf} timeframe:`, err);

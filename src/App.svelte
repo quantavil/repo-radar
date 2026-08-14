@@ -295,6 +295,10 @@
               />
             </div>
           {/each}
+
+          <div class="pt-4 pb-2 text-center text-xs font-mono text-[var(--text-muted)] border-t border-[var(--border-subtle)]">
+            End of feed for <strong class="text-[var(--text-main)] capitalize">{repoFeed.selectedLanguage === 'all' ? 'All Languages' : repoFeed.selectedLanguage}</strong> ({repos.length} unseen repositories loaded)
+          </div>
         </div>
       {/if}
     {/if}

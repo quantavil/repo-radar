@@ -77,6 +77,12 @@
         </span>
       {/if}
 
+      {#if repo.timeframe}
+        <span class="inline-flex items-center justify-center px-1.5 py-0.5 font-mono text-[10px] uppercase font-semibold rounded shrink-0 bg-[var(--bg-canvas)] border border-[var(--border-subtle)] text-[var(--text-muted)]">
+          {repo.timeframe}
+        </span>
+      {/if}
+
       <a
         href={repo.github_url || `https://github.com/${repo.full_name}`}
         target="_blank"

@@ -35,6 +35,7 @@
 - **Unfocused Hotkey Target Defaulting**: Pressing <kbd>S</kbd> or <kbd>D</kbd> without explicit card focus (`focusedIndex === -1`) defaulted to `repos[0]`. Fixed with explicit `focusedIndex < 0` guard.
 - **Combobox ARIA Role**: `aria-activedescendant` on `<button>` without `role="combobox"` triggered Svelte 5 a11y compiler warnings. Fixed by adding `role="combobox"`.
 - **Listbox Hotkey Leak**: Global hotkeys triggered when custom combobox listboxes were open. Fixed by adding `[role="listbox"]` to modal detector in `hotkeys.ts`.
+- **Feed Truncation at 10 Unseen Repos**: `api.svelte.ts` broke the timeframe loop as soon as `collected.length >= 10`, cutting off the feed prematurely. Fixed by removing the artificial break to sweep all available unseen repos across `daily`, `weekly`, and `monthly` timeframes.
 
 ---
 
